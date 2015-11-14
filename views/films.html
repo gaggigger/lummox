@@ -1,0 +1,33 @@
+
+
+<div class="row">
+
+    <div class="col-sm-12 col-sm-offset-3">
+
+        <h3>List of films</h3>
+
+        <table class="table table-condensed">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Release date</th>
+                <th>Director</th>
+                <th>Genre</th>
+                <th>View</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="film in films">
+                <td>{{film.film_title}}</td>
+                <td>{{film.film_release_date}}</td>
+                <td>{{film.director_name}}</td>
+                <td>{{film.film_genre}}</td>
+                <td><a href="#/viewfilm/{{film.film_id}}" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-zoom-in"></i></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
