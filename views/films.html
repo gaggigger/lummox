@@ -13,6 +13,7 @@
                 <th>Release date</th>
                 <th>Director</th>
                 <th>Genre</th>
+                <th>Reviews</th>
                 <th>View</th>
             </tr>
             </thead>
@@ -22,6 +23,7 @@
                 <td>{{film.film_release_date}}</td>
                 <td>{{film.director_name}}</td>
                 <td>{{film.film_genre}}</td>
+                <td><span ng-show="film.film_review_average">{{film.film_review_average}}%</span></td>
                 <td><a href="#/viewfilm/{{film.film_id}}" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-zoom-in"></i></a></td>
             </tr>
             </tbody>

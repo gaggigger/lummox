@@ -17,7 +17,10 @@
         <script src="bower_components/angular/angular.js"></script>
 		<script src="bower_components/angular-route/angular-route.min.js"></script>
         <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-        
+        <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+        <script src="bower_components/angular-confirm-modal/angular-confirm.min.js"></script>
+
         <!-- AngularJS custom -->
         <script src="js/app.js"></script>
         <script src="js/appRoutes.js"></script>
@@ -26,7 +29,12 @@
         <script src="js/controllers/FilmsController.js"></script>
         <script src="js/services/FilmService.js"></script>
         <script src="js/controllers/FilmController.js"></script>
-          
+        <script src="js/controllers/ReviewController.js"></script>
+        <script src="js/services/ReviewService.js"></script>
+        <script src="js/controllers/UsersController.js"></script>
+        <script src="js/controllers/UserController.js"></script>
+        <script src="js/services/UserService.js"></script>
+
 		<!-- styles -->
 		<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 		<link href="styles/style.css" rel="stylesheet">
@@ -52,7 +60,7 @@
 		
 		<div class="container">
 		
-			<div class="site-header">
+			<div class="site-header jumbotron">
 				<h1 class="site-title">Lummox</h1>
 				<h5 class="lead">Film review database</h5>
 			</div>
@@ -62,7 +70,7 @@
 				<div class="col-sm-8 site-main text-center">
 					
 					<!-- dynamic angular content -->
-					<div ng-view></div>
+                    <div ng-view></div>
 					
 				</div>
 			

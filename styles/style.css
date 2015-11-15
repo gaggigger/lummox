@@ -11,3 +11,19 @@ body {
     background-color: #f5f5f5;
     border-radius: 2px;
 }
+
+.film-review {
+    margin-bottom: 60px;
+}
+.film-review-title {
+    margin-bottom: 5px;
+}
+.film-review-meta {
+    margin-bottom: 20px;
+    color: #999;
+}
+
+.review-textarea {
+    rows: 20;
+    cols: 80;
+}

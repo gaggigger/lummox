@@ -1,0 +1,57 @@
+<div class="row">
+
+    <div class="col-sm-12 col-sm-offset-3">
+
+        <h2>{{ film.film_title }}<span ng-show="film.film_release_year"> ({{film.film_release_year}})</span></h2>
+
+        <div class="col-sm-12">
+            <form name="reviewForm" novalidate>
+                <div class="form-group">
+                    <label>Username / review author</label>
+                    <input ng-model="user.user_name" id="username" type="text" size="50" maxlength="25" name="username"
+                           required ng-pattern="/^[a-zA-Z0-9_]{1,25}$/">
+                    <p class="help-block" ng-show="reviewForm.username.$error.pattern">Bad username</p>
+                </div>
+                <div class="form-group">
+                    <label>Review title</label>
+                    <input ng-model="review.review_title" id="title" type="text" size="50" maxlength="50" name="title"
+                           required ng-pattern="/[^<>#]$/">
+                    <p class="help-block" ng-show="reviewForm.title.$error.pattern">Bad title</p>
+                </div>
+                <div class="form-group">
+                    <label>Rating (out of 100)</label>
+                    <input ng-model="review.review_score" id="rating" type="text" size="3" maxlength="3" name="rating"
+                           required ng-pattern="/^[0-9]$|^[1-9][0-9]$|^100$/">
+                    <p class="help-block" ng-show="reviewForm.rating.$error.pattern">Rate between 0 and 100, please</p>
+                </div>
+                <div class="form-group">
+                    <label>Your review:</label>
+                    <textarea ng-model="review.review_text" class="form-control review-textarea" rows="15" cols="80" id="reviewText" name="reviewText"
+                              required ng-pattern="/[^<>#]$/"></textarea>
+                    <p class="help-block" ng-show="reviewForm.reviewText.$error.pattern">Some characters aren't allowed</p>
+
+                </div>
+                <div class="form-group">
+                    <button ng-click="preview(reviewForm.$valid)" type="button" class="btn btn-default">Preview</button>
+                    <button ng-click="publish(reviewForm.$valid)" type="button" class="btn btn-primary">Publish</button>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="col-sm-12">
+            <div ng-show="previewPosted" class="film-review site-textbox">
+                <h3 class="film-review-title">{{review.review_title}} - {{review.review_score}}%</h3>
+                <p class="film-review-meta">Posted on {{previewReviewDatetime}} by {{ user.user_name}}</p>
+                <p>{{review.review_text}}</p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</div>
+
+
