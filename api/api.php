@@ -17,7 +17,11 @@ $app->post('/users/reviews', function() use ($app) {
     error_log("users/reviews user id: " . $userId);
 
     $reviews = $app->dataAccessService->getUserReviews($userId);
-    $response = array("success" => true, "data" => $reviews);
+
+    $userName = $app->dataAccessService->getUsername($userId);
+    $data = array("username" => $userName, "reviews" => $reviews);
+
+    $response = array("success" => true, "data" => $data);
     $app->apiService->json(200, $response);
 });
 

@@ -58,6 +58,13 @@ Class DataAccessService {
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getUsername($userId) {
+        $query = $this->pdo->prepare("SELECT user_name FROM users WHERE user_id = ?");
+        $query->bindParam(1, $userId);
+        $query->execute();
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function getUserRole($username) {
         $query = $this->pdo->prepare("SELECT user_role_id, role_name FROM users JOIN roles ON users.user_role_id = roles.role_id WHERE user_name = ?");
         $query->bindParam(1, $username);

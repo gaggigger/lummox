@@ -28,7 +28,7 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider',
         })
         .when('/users', {
             templateUrl : 'views/users.html',
-            controller : 'UserController'
+            controller : 'UsersController'
         })
         .when('/viewuser/:id/', {
             templateUrl : 'views/viewuser.html',

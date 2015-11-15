@@ -5,10 +5,12 @@ angular.module('UserController', []).controller('UserController',
 
         UserService.getUserReviews(userId)
             .success(function(data) {
+                $scope.data = data.data;
 
+                $scope.username = data.data.username.user_name;
             })
             .error(function(data) {
-
+                alert("There has been an error: " + data.data);
             });
 
     });

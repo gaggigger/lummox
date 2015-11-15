@@ -2,39 +2,28 @@
 
     <div class="col-sm-12 col-sm-offset-3">
 
-        <h2>{{ film.film_title }}<span ng-show="film.film_release_year"> ({{film.film_release_year}})</span></h2>
-
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>Release date</th>
-                <th>Director</th>
-                <th>Genre</th>
-                <th>Review average</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>{{film.film_release_date}}</td>
-                <td>{{film.director_name}}</td>
-                <td>{{film.film_genre}}</td>
-                <td><span ng-show="film.film_review_average">{{film.film_review_average}}%</span></td>
-            </tr>
-            </tbody>
-        </table>
-
-        <div class="col-sm-12 site-textbox">
-            <p>{{film.film_description}}</p>
-        </div>
+        <h2>{{ username }}'s reviews</h2>
 
         <div class="sol-sm-12 film-reviews">
             <h2>Reviews</h2>
-            <a ng-click="writeReview()" href="#/viewfilm/{{film.film_id}}/review/write">Write your own review</a>
-            <div ng-repeat="review in film.film_reviews" class="film-review">
-                <h3 class="film-review-title">{{review.review_title}} - {{review.review_score}}%</h3>
-                <p class="film-review-meta">Posted on {{review.review_datetime}} by {{ review.user_name}}</p>
-                <p>{{review.review_text}}</p>
-            </div>
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Score</th>
+                    <th>Film</th>
+                    <th>View</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="review in data.reviews">
+                    <td>{{review.review_title}}</td>
+                    <td>{{review.review_score}}</td>
+                    <td><a href="#/viewfilm/{{review.review_film_id}}">{{ review.film_title }}</a></td>
+                    <td><a href="#/viewreview/{{review.review_id}}" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-zoom-in"></i></a></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
