@@ -4,8 +4,7 @@
 
         <h2>{{ username }}'s reviews</h2>
 
-        <div class="sol-sm-12 film-reviews">
-            <h2>Reviews</h2>
+        <div ng-hide="noReviews" class="sol-sm-12 film-reviews">
             <table class="table table-condensed">
                 <thead>
                 <tr>
@@ -25,8 +24,10 @@
                 </tbody>
             </table>
         </div>
+
+        <div ng-show="noReviews">
+            <p>{{username}} hasn't written any reviews yet.</p>
+        </div>
     </div>
 
 </div>
-
-

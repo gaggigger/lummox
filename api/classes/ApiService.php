@@ -8,6 +8,12 @@ class ApiService {
         $app->halt($status, json_encode($data, JSON_PRETTY_PRINT));
     }
 
+    public function formatDatetime($date) {
+        $date = strtotime($date);
+        $date = date('d.m.Y', $date);
+        return $date;
+    }
+
     public function formatReviewsDatetime($reviews) {
         foreach($reviews as $key => $review) {
             $date = strtotime($review["review_datetime"]);

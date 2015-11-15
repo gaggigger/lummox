@@ -19,7 +19,7 @@
             </thead>
             <tbody>
             <tr ng-repeat="film in films">
-                <td>{{film.film_title}}</td>
+                <td><a href="#/viewfilm/{{film.film_id}}">{{film.film_title}}</a></td>
                 <td>{{film.film_release_date}}</td>
                 <td>{{film.director_name}}</td>
                 <td>{{film.film_genre}}</td>

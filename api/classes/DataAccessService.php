@@ -17,6 +17,19 @@ Class DataAccessService {
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getReview($reviewId) {
+        $query = $this->pdo->prepare("SELECT review_id, review_author, review_title, review_score, review_text, review_datetime, review_film_id, user_name, film_title FROM users JOIN reviews ON users.user_id = reviews.review_author JOIN films ON reviews.review_film_id = films.film_id WHERE review_id = ?");
+        $query->bindParam(1, $reviewId);
+        $query->execute();
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getReviews() {
+        $query = $this->pdo->prepare("SELECT review_id, review_author, review_title, review_score, review_text, review_datetime, review_film_id, film_title, user_name FROM users JOIN reviews ON users.user_id = reviews.review_author JOIN films ON reviews.review_film_id = films.film_id WHERE review_status_id = 2 ORDER BY review_datetime");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getFilms() {
         $query = "select film_id, film_title, film_release_date, film_director_id, film_genre, film_description, film_review_average, director_id, director_name FROM films JOIN directors ON films.film_director_id = directors.director_id order by film_release_date;";
         $query = $this->pdo->prepare($query);

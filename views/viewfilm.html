@@ -31,8 +31,8 @@
             <h2>Reviews</h2>
             <a ng-click="writeReview()" href="#/viewfilm/{{film.film_id}}/review/write">Write your own review</a>
             <div ng-repeat="review in film.film_reviews" class="film-review">
-                <h3 class="film-review-title">{{review.review_title}} - {{review.review_score}}%</h3>
-                <p class="film-review-meta">Posted on {{review.review_datetime}} by {{ review.user_name}}</p>
+                <h3 class="film-review-title"><a href="#/viewreview/{{review.review_id}}">{{review.review_title}} - {{review.review_score}}%</a></h3>
+                <p class="film-review-meta">Posted on {{review.review_datetime}} by <a href="#/viewuser/{{review.review_author}}">{{ review.user_name}}</a></p>
                 <p>{{review.review_text}}</p>
             </div>
         </div>

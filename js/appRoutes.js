@@ -34,6 +34,14 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider',
             templateUrl : 'views/viewuser.html',
             controller : 'UserController'
         })
+        .when('/viewreview/:id/', {
+            templateUrl : 'views/viewreview.html',
+            controller : 'ReviewController'
+        })
+        .when('/reviews', {
+            templateUrl : 'views/reviews.html',
+            controller : 'ReviewsController'
+        })
     .otherwise({
         redirectTo: '/'
     })

@@ -1,0 +1,30 @@
+<div class="row">
+
+    <div class="container">
+
+        <h3>Browse reviews</h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Film</th>
+                    <th>Title</th>
+                    <th>Score</th>
+                    <th>Author</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="review in reviews">
+                    <td><a href="#/viewfilm/{{review.review_film_id}}">{{review.film_title}}</a></td>
+                    <td>{{review.review_title}}</td>
+                    <td>{{review.review_score}}/100</td>
+                    <td><a href="#/viewuser/{{review.review_author}}">{{review.user_name}}</a></td>
+                    <td>{{review.review_datetime}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+

@@ -60,6 +60,22 @@ $app->post('/filmdata', function() use ($app) {
     }
 });
 
+$app->post('/review/get', function() use ($app) {
+    $body = json_decode($app->request()->getBody());
+    $reviewId = $body;
+    $review = $app->dataAccessService->getReview($reviewId);
+    $review["review_datetime"] = $app->apiService->formatDatetime($review["review_datetime"]);
+    $response = array("success" => true, "data" => $review);
+    $app->apiService->json(200, $response);
+});
+
+$app->get('/reviews', function() use ($app) {
+    $reviews = $app->dataAccessService->getReviews();
+    $reviews = $app->apiService->formatReviewsDatetime($reviews);
+    $response = array("success" => true, "data" => $reviews);
+    $app->apiService->json(200, $response);
+});
+
 $app->post('/review/publish', function() use ($app) {
     $review = json_decode($app->request()->getBody());
 

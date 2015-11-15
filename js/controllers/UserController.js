@@ -8,6 +8,10 @@ angular.module('UserController', []).controller('UserController',
                 $scope.data = data.data;
 
                 $scope.username = data.data.username.user_name;
+
+                if (data.data.reviews.length === 0) {
+                    $scope.noReviews = true;
+                }
             })
             .error(function(data) {
                 alert("There has been an error: " + data.data);
