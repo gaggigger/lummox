@@ -1,5 +1,5 @@
 angular.module('FilmController', []).controller('FilmController',
-    function($scope, $routeParams, $modal, $confirm, FilmService, ReviewService) {
+    function($scope, $routeParams, $modal, $window, $confirm, FilmService, ReviewService) {
     var id = $routeParams.id;
     FilmService.getFilmData(id)
         .success(function(data) {
@@ -34,7 +34,14 @@ angular.module('FilmController', []).controller('FilmController',
                     reviewText : $scope.review.review_text,
                     reviewFilmId : $scope.film.film_id
                 };
-               ReviewService.publish(review);
+               ReviewService.publish(review)
+                   .success(function(data) {
+                   $window.location = '#/films';
+                   })
+                   .error(function(data) {
+                       alert('An error occurred: ' + data.data);
+                   });
+
             });
         }
     };

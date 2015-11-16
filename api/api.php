@@ -97,7 +97,6 @@ $app->post('/review/publish', function() use ($app) {
 
     $getUserRoleResult = $app->dataAccessService->getUserRole($review->reviewAuthor);
     $userRole = $getUserRoleResult["role_name"];
-    error_log("=== fo realz mang, user role " . $userRole);
 
     if ($userRole === "Unregistered") {
         $app->dataAccessService->createReviewPending($review, $reviewAuthorId);
@@ -109,4 +108,24 @@ $app->post('/review/publish', function() use ($app) {
 
     $response = array("success" => true, "data" => "Review published successfully!");
     $app->apiService->json(200, $response);
+});
+
+$app->post('/users/registration', function() use ($app) {
+
+    $data = json_decode($app->request()->getBody());
+    $data->password = $app->apiService->hashPassword($data->password);
+    $response = $app->apiService->validateRegistration($app, $data);
+
+    if ($response["success"] === true) {
+        if($response["data"] === "Creating an account for existing username") {
+            // user role id is 4 by default, which is 'unverified'
+            $app->dataAccessService->updateUserRole($data->username);
+        } else if($response["data"] === "Creating a brand new account") {
+            $app->dataAccessService->createNewUser($data);
+        }
+        $app->apiService->json(200, $response);
+
+    } else {
+        $app->apiService->json(500, $response);
+    }
 });

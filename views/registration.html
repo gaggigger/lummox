@@ -1,0 +1,45 @@
+<div class="row">
+
+    <div class="container">
+
+        <h2>Create an account</h2>
+
+        <div class="col-sm-6 col-sm-offset-3 registration-form">
+            <form name="registrationForm" ng-submit="registration(registrationForm.$valid)" novalidate>
+
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" ng-model="formData.username" class="form-control" name="username"
+                            required ng-pattern="/^[a-zA-Z0-9_]{1,25}$/" ng-minlength="3" ng-maxlength="25">
+                    <p class="help-block" ng-show="registrationForm.username.$error.pattern">Invalid username</p>
+                    <p class="help-block" ng-show="registrationForm.username.$error.minlength">Too short</p>
+                    <p class="help-block" ng-show="registrationForm.username.$error.maxlength">Too long</p>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" ng-model="formData.password" class="form-control" name="password"
+                           required ng-minlength="10" ng-pattern="/[^<>#]$/" >
+                    <p class="help-block" ng-show="registrationForm.password.$error.pattern">Invalid password</p>
+                    <p class="help-block" ng-show="registrationForm.password.$error.minlength">Too short</p>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" ng-model="formData.email" class="form-control" name="email"
+                           required ng-minlength="4" ng-pattern="/@/" >
+                    <p class="help-block" ng-show="registrationForm.email.$error.pattern">Please enter a valid email address</p>
+                    <p class="help-block" ng-show="registrationForm.email.$error.minlength">Too short</p>
+                </div>
+
+                <button type="submit" class="btn-primary">Create account</button>
+            </form>
+
+            <div class="panel-body site-textbox">
+                <p>Already have an account? <a href="#/login">Click here to log in!</a></p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+

@@ -5,6 +5,9 @@ angular.module('UserService', []).factory('UserService', function($http) {
         },
         getUserReviews : function(userId) {
             return $http.post('api/users/reviews', userId);
+        },
+        registration : function(formData) {
+            return $http.post('api/users/registration', formData);
         }
     }
 });

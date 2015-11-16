@@ -42,6 +42,10 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider',
             templateUrl : 'views/reviews.html',
             controller : 'ReviewsController'
         })
+        .when('/registration', {
+            templateUrl : 'views/registration.html',
+            controller : 'RegistrationController'
+        })
     .otherwise({
         redirectTo: '/'
     })

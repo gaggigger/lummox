@@ -16,7 +16,7 @@
             </thead>
             <tbody>
             <tr ng-repeat="user in users">
-                <td>{{user.user_name}}</td>
+                <td><a href="#/viewuser/{{user.user_id}}">{{user.user_name}}</a></td>
                 <td>{{user.role_name}}</td>
                 <td><a href="#/viewuser/{{user.user_id}}" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-zoom-in"></i></a></td>
             </tr>

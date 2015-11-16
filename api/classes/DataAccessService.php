@@ -51,10 +51,41 @@ Class DataAccessService {
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function createNewUser($data) {
+        $unverifiedRoleId = 4;
+        $query = $this->pdo->prepare("INSERT INTO users (user_role_id, user_name, user_email, password) VALUES (:role, :username, :email, :pw)");
+        $query->bindParam(":role", $unverifiedRoleId);
+        $query->bindParam(":username", $data->username);
+        $query->bindParam(":email", $data->email);
+        $query->bindParam(":pw", $data->password);
+        $query->execute();
+    }
+
+    public function updateUserRole($username, $roleId = 4 /* unverified */) {
+        $query = $this->pdo->prepare("UPDATE users SET user_role_id = ? WHERE user_name = ?");
+        $query->bindParam(1, $roleId);
+        $query->bindParam(2, $username);
+        $query->execute();
+    }
+
     public function getUsers() {
         $query = $this->pdo->prepare("SELECT user_id, user_role_id, user_name, role_name FROM roles JOIN users ON roles.role_id = users.user_role_id");
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getUserByName($username) {
+        $query = $this->pdo->prepare("SELECT * FROM users WHERE user_name = ?");
+        $query->bindParam(1, $username);
+        $query->execute();
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getUserByEmail($email) {
+        $query = $this->pdo->prepare("SELECT * FROM users WHERE user_email = ?");
+        $query->bindParam(1, $email);
+        $query->execute();
+        return $query->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getUserReviews($userId) {
