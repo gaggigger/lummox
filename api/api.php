@@ -1,5 +1,7 @@
 <?php
 
+use Zend\Http\PhpEnvironment\Request;
+
 $app->get('/hello', function() use ($app) {
     $data = $app->dataAccessService->getHello('1');
     $response = array("success" => true, "data" => $data);
@@ -160,4 +162,47 @@ $app->post('/users/registration', function() use ($app) {
         $app->apiService->json(500, $response);
     }
 
+});
+
+$app->post('/users/authenticate', function() use ($app) {
+    $data = json_decode($app->request()->getBody());
+    $user = $app->dataAccessService->getUserByUsername($data->username);
+
+    if ($app->apiService->verifyPassword($data, $user)) {
+        // passwords match
+        // generate token data and create token
+        $token = $app->apiService->createToken(($app->apiService->generateTokenData($user)));
+        // send 200 and token
+        $response = array("success" => true, "token" => $token, "data" => "You are now logged in as " . $user["user_name"] . ".");
+        $app->apiService->json(200, $response);
+    } else {
+        // wrong password
+        $response = array("success" => false, "data" => "Authentication failed. Please make sure you entered the right password.");
+        $app->apiService->json(401, $response);
+    }
+});
+
+$app->get('/users/role', function() use ($app) {
+
+    $request = new Request();
+
+    if($request->isGet()) {
+        $header = $request->getHeader('authorization');
+        if ($header) {
+            $token = $app->apiService->extractToken($header);
+        }
+    }
+
+    if (null !== $token) {
+        $tokenData = $token->data;
+        $username = $tokenData->username;
+
+        $userData = $app->dataAccessService->getUserRole($username);
+
+        $response = array("success" => true, "data" => $userData);
+        $app->apiService->json(200, $response);
+    } else {
+        $response = array("success" => false, "data" => "Invalid token");
+        $app->apiService->json(401, $response);
+    }
 });

@@ -1,5 +1,7 @@
 <?php
 
+use Firebase\JWT\JWT;
+use Zend\Http\PhpEnvironment\Request;
 class ApiService {
 
 	public function json($status, $data) {
@@ -83,9 +85,9 @@ class ApiService {
             // email taken. return 500
             $response = array("success" => false, "data" => "A user already exists by that email", "emailTaken" => true, "usernameTaken" => false);
         } else if (!empty($userByEmail) && empty($userByUsername)) {
-            // username taken, email not taken
+            // email taken by another username
             // return 500
-            $response = array("success" => false, "data" => "That username is taken. Please choose another one.", "emailTaken" => false, "usernameTaken" => true);
+            $response = array("success" => false, "data" => "The email address you entered is in use by another username.", "emailTaken" => false, "usernameTaken" => true);
         } else if (!empty($userByEmail) && $userByEmail["user_name"] === $data->username) {
             // username taken by a user using the same email.
             // look up user role and see that it is unregistered, 6
@@ -118,8 +120,8 @@ class ApiService {
             "jti" => $tokenId,
             "iss" => $serverName,
             "data" => [
-                "userId" => $user->userId,
-                "username" => $user->username
+                "userId" => $user["user_id"],
+                "username" => $user["user_name"]
             ]
         ];
         return $data;
@@ -130,4 +132,26 @@ class ApiService {
         return $jwt;
     }
 
+    public function verifyPassword($requestUser, $dbUser) {
+        if(!empty($requestUser->password)) {
+            if (password_verify($requestUser->password, $dbUser["password"])) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public function extractToken($header) {
+        $token = null;
+        list($jwt) = sscanf($header->toString(), 'Authorization: Bearer %s');
+        if ($jwt) {
+            try {
+                $token = JWT::decode($jwt, SECRET, array('HS512'));
+            } catch (Exception $e) {
+                error_log($e);
+            }
+        }
+        return $token;
+    }
 }

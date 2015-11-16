@@ -33,7 +33,7 @@ angular.module('FilmController', []).controller('FilmController',
                 title: 'Publish review',
                 ok: 'Publish',
                 cancel: 'Cancel'
-            }).then(function(result) {
+            }).then(function() {
                 var review = {
                     reviewAuthor : $scope.user.user_name,
                     reviewTitle : $scope.review.review_title,

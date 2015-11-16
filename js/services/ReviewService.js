@@ -8,6 +8,12 @@ angular.module('ReviewService', []).factory('ReviewService', function($http) {
        },
        getAll : function() {
            return $http.get('api/reviews');
+       },
+       save : function(review) {
+           return $http.post('api/review/save', review);
+       },
+       delete : function(review) {
+           return $http.post('api/review/delete', review);
        }
    }
 });

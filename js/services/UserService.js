@@ -8,6 +8,14 @@ angular.module('UserService', []).factory('UserService', function($http) {
         },
         registration : function(formData) {
             return $http.post('api/users/registration', formData);
+        },
+        login : function(formData) {
+            return $http.post('api/users/authenticate', formData);
+        },
+        getUserRole : function(token) {
+            return $http.get('api/users/role', {
+                headers : {'Authorization' : 'Bearer ' + token}
+            });
         }
     }
 });

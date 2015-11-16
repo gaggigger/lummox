@@ -1,9 +1,9 @@
 angular.module('UserController', []).controller('UserController',
     function($scope, $routeParams, UserService) {
 
-        var userId = $routeParams.id;
+        var id = $routeParams.id;
 
-        UserService.getUserReviews(userId)
+        UserService.getUserReviews(id)
             .success(function(data) {
                 $scope.data = data.data;
 
@@ -14,7 +14,7 @@ angular.module('UserController', []).controller('UserController',
                 }
             })
             .error(function(data) {
-                alert("There has been an error: " + data.data);
+                alert('There has been an error: ' + data.data);
             });
 
     });

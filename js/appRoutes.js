@@ -34,7 +34,15 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider',
             templateUrl : 'views/viewuser.html',
             controller : 'UserController'
         })
-        .when('/viewreview/:id/', {
+        .when('/profile', {
+            templateUrl : 'views/profile.html',
+            controller : 'ProfileController'
+        })
+        .when('/editreview/:id', {
+            templateUrl : 'views/editreview.html',
+            controller : 'ReviewController'
+        })
+        .when('/viewreview/:id', {
             templateUrl : 'views/viewreview.html',
             controller : 'ReviewController'
         })
@@ -45,6 +53,18 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider',
         .when('/registration', {
             templateUrl : 'views/registration.html',
             controller : 'RegistrationController'
+        })
+        .when('/login', {
+            templateUrl : 'views/login.html',
+            controller : 'LoginController'
+        })
+        .when('/logout', {
+            templateUrl : 'views/home.html',
+            controller : 'LogoutController'
+        })
+        .when('/verification', {
+            templateUrl : 'views/verification.html',
+            controller : 'VerificationController'
         })
     .otherwise({
         redirectTo: '/'

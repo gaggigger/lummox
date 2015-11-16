@@ -1,0 +1,36 @@
+<div class="row">
+
+    <div class="col-sm-12 col-sm-offset-3">
+
+        <h2>My profile</h2>
+
+        <div ng-hide="noReviews" class="sol-sm-12 film-reviews">
+            <h3>Reviews:</h3>
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Score</th>
+                    <th>Film</th>
+                    <th>View</th>
+                    <th>Edit</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="review in data.reviews">
+                    <td>{{review.review_title}}</td>
+                    <td>{{review.review_score}}</td>
+                    <td><a href="#/viewfilm/{{review.review_film_id}}">{{ review.film_title }}</a></td>
+                    <td><a href="#/viewreview/{{review.review_id}}" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-zoom-in"></i></a></td>
+                    <td><a href="#/editreview/{{review.review_id}}" class="btn btn-default btn-sm"><i class="glyphicon-pencil"></i></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div ng-show="noReviews">
+            <p>You haven't written any reviews yet.</p>
+        </div>
+    </div>
+
+</div>

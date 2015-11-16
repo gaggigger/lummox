@@ -1,6 +1,7 @@
 {
   "require": {
     "slim/slim": "2.*",
-    "firebase/php-jwt" : "3.0.0"
+    "firebase/php-jwt" : "3.0.0",
+    "zendframework/zend-http" : "~2.3"
   }
 }

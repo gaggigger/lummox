@@ -16,7 +16,7 @@ angular.module('RegistrationController', []).controller('RegistrationController'
                     })
                     .error(function(data) {
                         $confirm({
-                            text: data.data,
+                            text: 'Registration failed! ' + data.data,
                             title: 'Registration',
                             ok: 'OK'
                         });

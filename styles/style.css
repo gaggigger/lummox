@@ -35,3 +35,8 @@ body {
 .table th {
     text-align: left;
 }
+
+.help-block {
+    color : red;
+    font-weight: bold;
+}
