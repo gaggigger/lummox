@@ -81,12 +81,18 @@ $app->post('/review/publish', function() use ($app) {
 
     $review->reviewStatusId = 1;
 
-    $reviewAuthorResult = $app->dataAccessService->getUserIdByUsername($review->reviewAuthor);
+    $reviewAuthorResult = $app->dataAccessService->getUserByUsername($review->reviewAuthor);
     $reviewAuthorId = $reviewAuthorResult["user_id"];
+
     if (!isset($reviewAuthorId)) {
-        $app->dataAccessService->createUnregisteredUser($review->reviewAuthor);
-        $reviewAuthorResult = $app->dataAccessService->getUserIdByUsername($review->reviewAuthor);
+        $app->dataAccessService->createUnregisteredUser($review->reviewAuthor, $review->email);
+        $reviewAuthorResult = $app->dataAccessService->getUserByUsername($review->reviewAuthor);
         $reviewAuthorId = $reviewAuthorResult["user_id"];
+    } else {
+        if($review->email !== $reviewAuthorResult["user_email"]) {
+            $response = array("success" => false, "data" => "A user by this email already exists.");
+            $app->apiService->json(401, $response);
+        }
     }
 
     if ($app->dataAccessService->isReviewedByUser($review->reviewFilmId, $reviewAuthorId)) {
@@ -100,13 +106,14 @@ $app->post('/review/publish', function() use ($app) {
 
     if ($userRole === "Unregistered") {
         $app->dataAccessService->createReviewPending($review, $reviewAuthorId);
+        $response = array("success" => true, "data" => "Review published successfully!", "autopublished" => false);
     } else if ($userRole === "Admin" || $userRole === "Moderator" || $userRole === "User") {
         error_log("User is registered and stuff, autopublishing");
         $app->dataAccessService->createReviewPublished($review, $reviewAuthorId);
         $app->dataAccessService->updateFilmAverageScore($review->reviewFilmId, $app->apiService->calculateNewAverage($app, $review->reviewFilmId));
+        $response = array("success" => true, "data" => "Review published successfully!", "autopublished" => true);
     }
 
-    $response = array("success" => true, "data" => "Review published successfully!");
     $app->apiService->json(200, $response);
 });
 

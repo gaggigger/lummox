@@ -1,9 +1,11 @@
 angular.module('FilmController', []).controller('FilmController',
-    function($scope, $routeParams, $modal, $window, $confirm, FilmService, ReviewService) {
+    function($scope, $routeParams, $modal, $window, $confirm, $localStorage,
+             FilmService, ReviewService) {
     var id = $routeParams.id;
     FilmService.getFilmData(id)
         .success(function(data) {
             $scope.film = data.data;
+            getDataFromStorage();
         })
         .error(function(data) {
             $scope.error = data.data;
@@ -21,6 +23,11 @@ angular.module('FilmController', []).controller('FilmController',
 
     $scope.publish = function(isValid) {
         if (isValid) {
+            $localStorage.review = {
+                user : $scope.user,
+                review : $scope.review,
+                film : $scope.film
+            };
             $confirm({
                 text: 'Are you sure you want to publish this review?',
                 title: 'Publish review',
@@ -32,18 +39,56 @@ angular.module('FilmController', []).controller('FilmController',
                     reviewTitle : $scope.review.review_title,
                     reviewScore : $scope.review.review_score,
                     reviewText : $scope.review.review_text,
-                    reviewFilmId : $scope.film.film_id
+                    reviewFilmId : $scope.film.film_id,
+                    email : $scope.review.email
                 };
                ReviewService.publish(review)
                    .success(function(data) {
-                   $window.location = '#/films';
+                       clearFields();
+                       if (!data.data.autopublished) {
+                           $confirm({
+                               text: 'Thanks for your submission! Your review is pending for moderator approval.',
+                               title: 'Review added to queue',
+                               ok: 'OK'
+                           });
+                       }
+                       $window.location = '#/films';
                    })
                    .error(function(data) {
                        alert('An error occurred: ' + data.data);
+                       getDataFromStorage();
                    });
 
             });
+        } else if (!isValid) {
+            alert('Invalid form data.');
         }
     };
+
+        $scope.startOver = function() {
+            $confirm({
+                text : 'Clear all fields? Your review will be lost if you proceed.',
+                title : 'Start over',
+                ok : 'Go',
+                cancel : 'Cancel'
+            }).then(function(result) {
+                clearFields();
+            });
+        };
+
+        var getDataFromStorage = function() {
+            if (typeof $localStorage.review !== 'undefined') {
+                $scope.user = $localStorage.review.user;
+                $scope.review = $localStorage.review.review;
+                $scope.film = $localStorage.review.film;
+            }
+        };
+
+        var clearFields = function() {
+            delete $localStorage.review;
+            $scope.user = {};
+            $scope.review = {};
+            $scope.film = {};
+        };
 
 });

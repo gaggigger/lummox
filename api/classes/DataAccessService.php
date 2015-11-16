@@ -95,8 +95,8 @@ Class DataAccessService {
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getUserIdByUsername($username) {
-        $query = $this->pdo->prepare("SELECT user_id FROM users WHERE user_name = ?");
+    public function getUserByUsername($username) {
+        $query = $this->pdo->prepare("SELECT * FROM users WHERE user_name = ?");
         $query->bindParam(1, $username);
         $query->execute();
         return $query->fetch(PDO::FETCH_ASSOC);
@@ -129,9 +129,10 @@ Class DataAccessService {
         }
     }
 
-    public function createUnregisteredUser($username) {
-        $query = $this->pdo->prepare("INSERT INTO users (user_name, user_role_id) VALUES (:user_name, 6)");
+    public function createUnregisteredUser($username, $email) {
+        $query = $this->pdo->prepare("INSERT INTO users (user_name, user_role_id, user_email) VALUES (:user_name, 6, :user_email)");
         $query->bindParam(":user_name", $username);
+        $query->bindParam(":user_email",$email);
         $query->execute();
     }
 
