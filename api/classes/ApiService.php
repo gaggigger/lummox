@@ -147,11 +147,15 @@ class ApiService {
         list($jwt) = sscanf($header->toString(), 'Authorization: Bearer %s');
         if ($jwt) {
             try {
-                $token = JWT::decode($jwt, SECRET, array('HS512'));
+                $token = $this->decodeToken($jwt);
             } catch (Exception $e) {
                 error_log($e);
             }
         }
         return $token;
+    }
+
+    public function decodeToken($token) {
+        return JWT::decode($token, SECRET, array('HS512'));
     }
 }

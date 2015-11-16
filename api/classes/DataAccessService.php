@@ -157,6 +157,16 @@ Class DataAccessService {
         $query->execute();
     }
 
+    public function saveReview($review, $reviewAuthorId) {
+        $query = $this->pdo->prepare("UPDATE reviews SET review_title = :title, review_score = :score, review_text = :text WHERE review_author = :author && review_film_id = :film ");
+        $query->bindParam(":title", $review->reviewTitle);
+        $query->bindParam(":score", $review->reviewScore);
+        $query->bindParam(":text", $review->reviewText);
+        $query->bindParam(":film", $review->reviewFilmId);
+        $query->bindParam(":author", $reviewAuthorId);
+        $query->execute();
+    }
+
     public function updateFilmAverageScore($filmId, $newAverage) {
         $query = $this->pdo->prepare("UPDATE films SET film_review_average = ? WHERE film_id = ?");
         $query->bindParam(1, $newAverage);

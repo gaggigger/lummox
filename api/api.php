@@ -142,6 +142,33 @@ $app->post('/review/publish', function() use ($app) {
     $app->apiService->json($status, $response);
 });
 
+$app->post('/review/save', function() use ($app) {
+
+    $data = json_decode($app->request()->getBody());
+    // get and decode token
+    $token = $data->token;
+    $token = $app->apiService->decodeToken($token);
+
+    if (!empty($token)) {
+        // get user data from token
+        $tokenData = $token->data;
+        $username = $tokenData->username;
+        $userData = $app->dataAccessService->getUserRole($username);
+        error_log("================================");
+        error_log($data->reviewText);
+        error_log($userData["user_id"]);
+        error_log("================================");
+        // save
+        $app->dataAccessService->saveReview($data, $userData["user_id"]);
+        $response = array("success" => true, "data" => "Changes successfully saved!");
+        $status = 200;
+    } else {
+        $response = array("success" => false, "data" => "Invalid token!");
+        $status = 401;
+    }
+    $app->apiService->json($status, $response);
+});
+
 $app->post('/users/registration', function() use ($app) {
 
     $data = json_decode($app->request()->getBody());
@@ -206,3 +233,4 @@ $app->get('/users/role', function() use ($app) {
         $app->apiService->json(401, $response);
     }
 });
+

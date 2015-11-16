@@ -14,6 +14,9 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider',
 		templateUrl : 'views/about.html',
 		controller : 'MainController'
 	})
+        .when('/error', {
+            templateUrl : 'views/error.html'
+        })
         .when('/films', {
             templateUrl : 'views/films.html',
             controller : 'FilmsController'
@@ -38,7 +41,7 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider',
             templateUrl : 'views/profile.html',
             controller : 'ProfileController'
         })
-        .when('/editreview/:id', {
+        .when('/profile/editreview/:id', {
             templateUrl : 'views/editreview.html',
             controller : 'ReviewController'
         })
