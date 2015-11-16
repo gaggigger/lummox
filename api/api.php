@@ -79,60 +79,85 @@ $app->get('/reviews', function() use ($app) {
 $app->post('/review/publish', function() use ($app) {
     $review = json_decode($app->request()->getBody());
 
+    // set review status to pending
     $review->reviewStatusId = 1;
+    // lowercase email
+    $review->email = strtolower($review->email);
 
-    $reviewAuthorResult = $app->dataAccessService->getUserByUsername($review->reviewAuthor);
-    $reviewAuthorId = $reviewAuthorResult["user_id"];
+    // look up user with the same username as review author
+    // get their id
+    $userByUsername = $app->dataAccessService->getUserByUsername($review->reviewAuthor);
+    $reviewAuthorId = $userByUsername["user_id"];
+    // look up email to see if it's in use
+    $userByEmail = $app->dataAccessService->getUserByEmail($review->email);
 
-    if (!isset($reviewAuthorId)) {
-        $app->dataAccessService->createUnregisteredUser($review->reviewAuthor, $review->email);
-        $reviewAuthorResult = $app->dataAccessService->getUserByUsername($review->reviewAuthor);
-        $reviewAuthorId = $reviewAuthorResult["user_id"];
-    } else {
-        if($review->email !== $reviewAuthorResult["user_email"]) {
-            $response = array("success" => false, "data" => "A user by this email already exists.");
-            $app->apiService->json(401, $response);
+    if (!empty($userByUsername)) {
+        // user by username already exists
+        // check if email matches
+        if ($userByUsername["user_email"] === $review->email && $userByEmail["user_name"] === $review->reviewAuthor) {
+            // same user
+            // look up reviews by this user for this film
+            if ($app->dataAccessService->isReviewedByUser($review->reviewFilmId, $reviewAuthorId)) {
+                // user has already reviewed this film
+                error_log("a user has posted a review for a film that is already reviewed by same user. rejecting");
+                $response = array("success" => false, "data" => "Review already exists by this user for this film!");
+            } else {
+                // no review for this film by user
+                // look up user role
+                $getUserRoleResult = $app->dataAccessService->getUserRole($review->reviewAuthor);
+                $userRole = $getUserRoleResult["role_name"];
+                if ($userRole === "Unregistered") {
+                    // user is unregistered, send review to queue
+                    $app->dataAccessService->createReviewPending($review, $reviewAuthorId);
+                    $response = array("success" => true, "data" => "Review published successfully!", "autopublished" => false);
+                } else if ($userRole !== "Banned" && $userRole !== "Unverified") {
+                    // user is registered and has privileges to publish review
+                    $app->dataAccessService->createReviewPublished($review, $reviewAuthorId);
+                    $app->dataAccessService->updateFilmAverageScore($review->reviewFilmId, $app->apiService->calculateNewAverage($app, $review->reviewFilmId));
+                    $response = array("success" => true, "data" => "Review published successfully!", "autopublished" => true);
+                }
+            }
+        } else {
+            // same user, different email
+            $response = array("success" => false, "data" => "This username is already taken.");
         }
-    }
-
-    if ($app->dataAccessService->isReviewedByUser($review->reviewFilmId, $reviewAuthorId)) {
-        error_log("a user has posted a review for a film that is already reviewed by same user. rejecting");
-        $response = array("success" => false, "data" => "Review already exists by this user for this film!");
-        $app->apiService->json(500, $response);
-    }
-
-    $getUserRoleResult = $app->dataAccessService->getUserRole($review->reviewAuthor);
-    $userRole = $getUserRoleResult["role_name"];
-
-    if ($userRole === "Unregistered") {
-        $app->dataAccessService->createReviewPending($review, $reviewAuthorId);
+    } else if (empty($userByEmail)){
+        // completely new user
+        $app->dataAccessService->createUnregisteredUser($review->reviewAuthor, $review->email);
+        $reviewAuthor = $app->dataAccessService->getUserByUsername($review->reviewAuthor);
+        $app->dataAccessService->createReviewPending($review, $reviewAuthor["user_id"]);
         $response = array("success" => true, "data" => "Review published successfully!", "autopublished" => false);
-    } else if ($userRole === "Admin" || $userRole === "Moderator" || $userRole === "User") {
-        error_log("User is registered and stuff, autopublishing");
-        $app->dataAccessService->createReviewPublished($review, $reviewAuthorId);
-        $app->dataAccessService->updateFilmAverageScore($review->reviewFilmId, $app->apiService->calculateNewAverage($app, $review->reviewFilmId));
-        $response = array("success" => true, "data" => "Review published successfully!", "autopublished" => true);
+    } else {
+        // email is already taken by another user
+        $response = array("success" => false, "data" => "The email you entered is already taken by another user.");
     }
 
-    $app->apiService->json(200, $response);
+    $status = 200;
+    // send response
+    if ($response["success"] === false) {
+        $status = 500;
+    }
+    $app->apiService->json($status, $response);
 });
 
 $app->post('/users/registration', function() use ($app) {
 
     $data = json_decode($app->request()->getBody());
+
     $data->password = $app->apiService->hashPassword($data->password);
+    $data->email = strtolower($data->email);
+
     $response = $app->apiService->validateRegistration($app, $data);
 
-    if ($response["success"] === true) {
-        if($response["data"] === "Creating an account for existing username") {
-            // user role id is 4 by default, which is 'unverified'
+    if ($response["success"]) {
+        if ($response["data"] === "An account has been created for your username.") {
             $app->dataAccessService->updateUserRole($data->username);
-        } else if($response["data"] === "Creating a brand new account") {
+        } else {
             $app->dataAccessService->createNewUser($data);
         }
         $app->apiService->json(200, $response);
-
     } else {
         $app->apiService->json(500, $response);
     }
+
 });

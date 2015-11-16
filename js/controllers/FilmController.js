@@ -45,7 +45,14 @@ angular.module('FilmController', []).controller('FilmController',
                ReviewService.publish(review)
                    .success(function(data) {
                        clearFields();
-                       if (!data.data.autopublished) {
+                       if(data.autopublished) {
+                           $confirm({
+                               text: 'Thanks for your submission! Your review has been published.',
+                               title: 'Review published',
+                               ok: 'OK'
+                           });
+                       }
+                       else if (!data.autopublished) {
                            $confirm({
                                text: 'Thanks for your submission! Your review is pending for moderator approval.',
                                title: 'Review added to queue',

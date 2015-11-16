@@ -1,17 +1,25 @@
 angular.module('RegistrationController', []).controller('RegistrationController',
-    function($scope, $localStorage, $window, UserService) {
+    function($scope, $localStorage, $window, $confirm, UserService) {
 
         $scope.registration = function(isValid) {
             if (isValid) {
                 UserService.registration($scope.formData)
                     .success(function(data) {
                         if(data.success === true) {
-                            $localStorage.token = data.data.token;
+                            $confirm({
+                                text: data.data,
+                                title: 'Registration',
+                                ok: 'OK'
+                            });
                             $window.location = '#/';
                         }
                     })
                     .error(function(data) {
-                        alert('An error occurred: ' + data.data);
+                        $confirm({
+                            text: data.data,
+                            title: 'Registration',
+                            ok: 'OK'
+                        });
                     });
             }
         }

@@ -62,28 +62,46 @@ class ApiService {
     }
 
     public function validateRegistration($app, $data) {
-        $response = null;
 
-        if (isset($data->username) && isset($data->password) && isset($data->email)) {
-            $user = $app->dataAccessService->getUserByEmail($data->email);
+        // look up users with the same username or email
+        $userByUsername = $app->dataAccessService->getUserByUsername($data->username);
+        $userByEmail = $app->dataAccessService->getUserByEmail($data->email);
 
-            if (!empty ($user)) {
-                $response = array("success" => false, "data" => "User exists by that email");
+        // debug
+        error_log("###");
+        error_log($userByEmail["user_name"]);
+        error_log($data->username);
+        error_log($userByEmail["user_role_id"]);
+        error_log("###");
+        // end debug
+
+        if (empty($userByEmail) && empty($userByUsername)) {
+            // username not taken, email not taken
+            // create user
+            $response = array("success" => true, "data" => "Thank you for registering.", "emailTaken" => false, "usernameTaken" => false);
+        } else if (empty($userByEmail) && !empty($userByEmail)) {
+            // email taken. return 500
+            $response = array("success" => false, "data" => "A user already exists by that email", "emailTaken" => true, "usernameTaken" => false);
+        } else if (!empty($userByEmail) && empty($userByUsername)) {
+            // username taken, email not taken
+            // return 500
+            $response = array("success" => false, "data" => "That username is taken. Please choose another one.", "emailTaken" => false, "usernameTaken" => true);
+        } else if (!empty($userByEmail) && $userByEmail["user_name"] === $data->username) {
+            // username taken by a user using the same email.
+            // look up user role and see that it is unregistered, 6
+            if ($userByEmail["user_role_id"] !== 6) {
+                $response = array("success" => false, "data" => "Username taken by a registered user.", "emailTaken" => false, "usernameTaken" => true);
             } else {
-                $user = $app->dataAccessService->getUserByName($data->username);
-                if (!empty($user)) {
-                    if ($user["user_role_id"] === 6) {
-                        error_log("Hello");
-                        $response = array("success" => true, "data" => "Creating an account for existing username");
-
-                    } else if ($user["user_role_id"] !== 6 ) {
-                        $response = array("success" => false, "data" => "User exists by that name");
-                    }
-                } else {
-                    $response = array("success" => true, "data" => "Creating a brand new account");
-                }
+                $response = array("success" => true, "data" => "An account has been created for your username.", "emailTaken" => false, "usernameTaken" => true);
             }
+        } else if (!empty($userByUsername) && $userByUsername["user_email"] !== $data->email) {
+            // username is taken by someone using a different email
+            $response = array("success" => false, "data" => "Username taken by someone using a a different email. ", "emailTaken" => false, "usernameTaken" => true);
+        } else {
+            // problems
+            $response = array("success" => false, "data" => "An error occurred. Please contact an administrator.");
         }
+
         return $response;
     }
 
