@@ -10,8 +10,9 @@ angular.module('RegistrationController', []).controller('RegistrationController'
                                 text: data.data,
                                 title: 'Registration',
                                 ok: 'OK'
+                            }).then(function() {
+                                $window.location = '#/verification';
                             });
-                            $window.location = '#/';
                         }
                     })
                     .error(function(data) {

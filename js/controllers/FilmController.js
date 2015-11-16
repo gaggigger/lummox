@@ -1,6 +1,6 @@
 angular.module('FilmController', []).controller('FilmController',
     function($scope, $routeParams, $modal, $window, $confirm, $localStorage,
-             FilmService, ReviewService) {
+             FilmService, ReviewService, UserService) {
     var id = $routeParams.id;
     FilmService.getFilmData(id)
         .success(function(data) {
@@ -11,6 +11,17 @@ angular.module('FilmController', []).controller('FilmController',
             $scope.error = data.data;
             alert("there has been an error : " + data.data);
         });
+
+    if (typeof $localStorage.token !== 'undefined') {
+        UserService.getUserRole($localStorage.token)
+            .success(function(data) {
+                $scope.user = data.data;
+                $scope.hideFields = true;
+            })
+            .error(function(data) {
+                $window.location = '#/error';
+            });
+    }
 
     $scope.preview = function() {
         $scope.previewPosted = true;
@@ -40,7 +51,7 @@ angular.module('FilmController', []).controller('FilmController',
                     reviewScore : $scope.review.review_score,
                     reviewText : $scope.review.review_text,
                     reviewFilmId : $scope.film.film_id,
-                    email : $scope.review.email
+                    email : $scope.user.user_email
                 };
                ReviewService.publish(review)
                    .success(function(data) {

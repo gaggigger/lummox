@@ -154,18 +154,19 @@ $app->post('/review/save', function() use ($app) {
         $tokenData = $token->data;
         $username = $tokenData->username;
         $userData = $app->dataAccessService->getUserRole($username);
-        error_log("================================");
-        error_log($data->reviewText);
-        error_log($userData["user_id"]);
-        error_log("================================");
+
         // save
         $app->dataAccessService->saveReview($data, $userData["user_id"]);
         $response = array("success" => true, "data" => "Changes successfully saved!");
         $status = 200;
+
+        // new average
+        $app->dataAccessService->updateFilmAverageScore($data->reviewFilmId, $app->apiService->calculateNewAverage($app, $data->reviewFilmId));
     } else {
         $response = array("success" => false, "data" => "Invalid token!");
         $status = 401;
     }
+
     $app->apiService->json($status, $response);
 });
 
@@ -208,6 +209,7 @@ $app->post('/users/authenticate', function() use ($app) {
         $app->apiService->json(401, $response);
     }
 });
+
 
 $app->get('/users/role', function() use ($app) {
 

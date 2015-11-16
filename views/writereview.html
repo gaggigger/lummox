@@ -7,9 +7,9 @@
         <div class="col-sm-6 col-sm-offset-3 review-form">
 
             <form name="reviewForm" novalidate>
-                <div class="form-group">
+                <div class="form-group" ng-hide="hideFields">
                     <label>Username / review author</label>
-                    <input ng-model="user.user_name" id="username" type="text" size="50" maxlength="25" name="username" class="form-control"
+                    <input ng-model="user.user_name"  id="username" type="text" size="50" maxlength="25" name="username" class="form-control" value="{{user.user_name}}"
                            required ng-pattern="/^[a-zA-Z0-9_]{1,25}$/" ng-minlength="3" ng-maxlength="25">
                     <p class="help-block" ng-show="reviewForm.username.$error.pattern">Bad username</p>
                     <p class="help-block" ng-show="reviewForm.username.$error.minlength">Too short</p>
@@ -28,9 +28,9 @@
                            required ng-pattern="/^[0-9]$|^[1-9][0-9]$|^100$/">
                     <p class="help-block" ng-show="reviewForm.rating.$error.pattern">Rate between 0 and 100, please</p>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-hide="hideFields">
                     <label>Email</label>
-                    <input ng-model="review.email" id="email" type="text" size="50" maxlength="50" name="email" class="form-control"
+                    <input ng-model="user.user_email"  id="email" type="text" size="50" maxlength="50" name="email" class="form-control" value="{{user.user_email}}"
                            required ng-minlength="4" ng-pattern="/@/" >
                     <p class="help-block" ng-show="reviewForm.email.$error.pattern">Please enter a valid email address</p>
                     <p class="help-block" ng-show="reviewForm.email.$error.minlength">Too short</p>
