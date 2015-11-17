@@ -43,7 +43,7 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider',
         })
         .when('/profile/editreview/:id', {
             templateUrl : 'views/editreview.html',
-            controller : 'ReviewController'
+            controller : 'EditReviewController'
         })
         .when('/viewreview/:id', {
             templateUrl : 'views/viewreview.html',

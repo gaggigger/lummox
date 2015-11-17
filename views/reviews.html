@@ -12,6 +12,7 @@
                     <th>Score</th>
                     <th>Author</th>
                     <th>Time</th>
+                    <th>View</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,6 +22,7 @@
                     <td>{{review.review_score}}/100</td>
                     <td><a href="#/viewuser/{{review.review_author}}">{{review.user_name}}</a></td>
                     <td>{{review.review_datetime}}</td>
+                    <td><a href="#/viewreview/{{review.review_id}}" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-zoom-in"></i></a></td>
                 </tr>
             </tbody>
         </table>

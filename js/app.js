@@ -3,7 +3,7 @@ angular.module('lummox',[
                          'FilmService', 'FilmController', 'ReviewController', 'ReviewService',
                          'UserController', 'UsersController', 'UserService', 'ReviewsController',
                          'RegistrationController', 'LoginController', 'VerificationController',
-                         'LogoutController', 'ProfileController',
+                         'LogoutController', 'ProfileController', 'EditReviewController',
                          'ui.bootstrap', 'angular-confirm', 'ngStorage'
 
                          ]);
