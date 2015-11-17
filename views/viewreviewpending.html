@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col-sm-12">
+
+        <h3><a href="#/viewfilm/{{review_film_id}}">{{review.film_title}}</a></h3>
+        <p>This review is pending.</p>
+    </div>
+
+    <div class="col-sm-12 col-sm-offset-3">
+
+        <div class="sol-sm-12 site-textbox">
+            <h2 class="film-review-title">{{review.review_title}} - {{review.review_score}}%</h2>
+            <p class="film-review-meta">Posted on {{review.review_datetime}} by <a href="#/viewuser/{{review.review_author}}">{{ review.user_name}}</a></p>
+            <p>{{review.review_text}}</p>
+        </div>
+
+        <button ng-click="accept()" type="button" class="btn btn-primary">Accept</button>
+        <button ng-click="reject()" type="button" class="btn btn-danger">Reject</button>
+
+        <div class="col-sm-12">
+            <div ng-show="previewPosted" class="film-review site-textbox">
+                <h3 class="film-review-title">{{review.review_title}} - {{review.review_score}}%</h3>
+                <p class="film-review-meta">Posted on {{previewReviewDatetime}} by {{ user.user_name}}</p>
+                <p>{{review.review_text}}</p>
+            </div>
+        </div>
+
+    </div>
+</div>

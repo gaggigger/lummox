@@ -124,8 +124,8 @@ INSERT INTO `roles` (`role_id`, `role_name`, `role_desc`) VALUES
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_role_id` int(11) NOT NULL,
-  `user_name` varchar(25) COLLATE utf8_bin DEFAULT NULL,
-  `user_email` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `user_name` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `user_email` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `password` varchar(1000) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   KEY `user_role_id` (`user_role_id`),

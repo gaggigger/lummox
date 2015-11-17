@@ -69,3 +69,27 @@ $app->post('/admin/review/accept', function() use ($app) {
         $app->apiService->json(401, $response);
     }
 });
+
+$app->post('/admin/user/verify', function() use ($app) {
+    // user role id for user (verified)
+    $verified = 3;
+
+    $request = new Request();
+    if($request->isPost()) {
+        $header = $request->getHeader('authorization');
+        if ($header) {
+            $token = $app->apiService->extractToken($header);
+        }
+    }
+
+    $data = json_decode($app->request()->getBody());
+
+    if (null !== $token) {
+        $app->dataAccessService->updateUserRole($data->user_name, $verified);
+        $response = array("success" => true, "data" => "User verified successfully.");
+        $app->apiService->json(200, $response);
+    } else {
+        $response = array("success" => false, "data" => "Invalid token!");
+        $app->apiService->json(401, $response);
+    }
+});

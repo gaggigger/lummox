@@ -66,42 +66,49 @@ class ApiService {
     public function validateRegistration($app, $data) {
 
         // look up users with the same username or email
-        $userByUsername = $app->dataAccessService->getUserByUsername($data->username);
+        $userByUsername = $app->dataAccessService->getUserByName($data->username);
         $userByEmail = $app->dataAccessService->getUserByEmail($data->email);
+        $byEmailUsername = strtolower($userByEmail["user_name"]);
+        $byUsernameUsername = strtolower($userByUsername["user_name"]);
+        $reqUsername = strtolower($data->username);
 
-        // debug
-        error_log("###");
-        error_log($userByEmail["user_name"]);
-        error_log($data->username);
-        error_log($userByEmail["user_role_id"]);
-        error_log("###");
-        // end debug
+        $reqEmail = strtolower($data->email);
+        $byEmailEmail = strtolower($userByEmail["user_email"]);
+        $byUsernameEmail = strtolower($userByUsername["user_email"]);
 
-        if (empty($userByEmail) && empty($userByUsername)) {
-            // username not taken, email not taken
-            // create user
-            $response = array("success" => true, "data" => "Thank you for registering.", "emailTaken" => false, "usernameTaken" => false);
-        } else if (empty($userByEmail) && !empty($userByEmail)) {
-            // email taken. return 500
-            $response = array("success" => false, "data" => "A user already exists by that email", "emailTaken" => true, "usernameTaken" => false);
-        } else if (!empty($userByEmail) && empty($userByUsername)) {
-            // email taken by another username
-            // return 500
-            $response = array("success" => false, "data" => "The email address you entered is in use by another username.", "emailTaken" => false, "usernameTaken" => true);
-        } else if (!empty($userByEmail) && $userByEmail["user_name"] === $data->username) {
-            // username taken by a user using the same email.
-            // look up user role and see that it is unregistered, 6
-            if ($userByEmail["user_role_id"] !== 6) {
-                $response = array("success" => false, "data" => "Username taken by a registered user.", "emailTaken" => false, "usernameTaken" => true);
+        if ($reqUsername !== $byEmailUsername) {
+            // requested username is different from the username retrieved by looking up by requested email
+            if (empty($byEmailUsername)) {
+                // no username was retrieved by requested email
+                if ($reqEmail !== $byUsernameEmail) {
+                    // no user found by this email using the same username
+                    if ($reqUsername !== $byUsernameUsername) {
+                        // no user found by this username either
+                        // username not taken, email not taken
+                        // create user
+                        $response = array("success" => true, "data" => "Thank you for registering.");
+                    } else {
+                        // username in use by another email address
+                        $response = array("success" => false, "data" => "Username is already in use by another account.");
+                    }
+                } else {
+                    // requested email is in use by a differently named account
+                    $response = array("success" => false, "data" => "Email is already in use by another account.");
+                }
             } else {
-                $response = array("success" => true, "data" => "An account has been created for your username.", "emailTaken" => false, "usernameTaken" => true);
+                // requested username is different from the username retrieved by looking up by requested email
+                // an username was found that was using the requested email
+                $response = array("success" => false, "data" => "Email is already in use by another account.");
             }
-        } else if (!empty($userByUsername) && $userByUsername["user_email"] !== $data->email) {
-            // username is taken by someone using a different email
-            $response = array("success" => false, "data" => "Username taken by someone using a a different email. ", "emailTaken" => false, "usernameTaken" => true);
         } else {
-            // problems
-            $response = array("success" => false, "data" => "An error occurred. Please contact an administrator.");
+            // requested username is the same as the one found for requested email address
+            if($userByEmail["user_role_id"] !== 6) {
+                // not unregistered
+                $response = array("success" => false, "data" => "Username taken by a registered user.");
+            } else {
+                // unregistered
+                $response = array("success" => true, "data" => "An account has been created for your username.");
+            }
         }
 
         return $response;
