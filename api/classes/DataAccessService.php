@@ -167,10 +167,24 @@ Class DataAccessService {
         $query->execute();
     }
 
+    public function updateReviewStatus($review, $statusId) {
+        $query = $this->pdo->prepare("UPDATE reviews SET review_status_id = :status WHERE review_author = :author && review_film_id = :film ");
+        $query->bindParam(":status", $statusId);
+        $query->bindParam(":author", $review->review_author);
+        $query->bindParam(":film", $review->review_film_id);
+        $query->execute();
+    }
+
     public function updateFilmAverageScore($filmId, $newAverage) {
         $query = $this->pdo->prepare("UPDATE films SET film_review_average = ? WHERE film_id = ?");
         $query->bindParam(1, $newAverage);
         $query->bindParam(2, $filmId);
         $query->execute();
+    }
+
+    public function getReviewsPending() {
+        $query = $this->pdo->prepare("SELECT review_id, review_author, review_title, review_score, review_text, review_datetime, review_film_id, review_status_id, film_title, user_name FROM users JOIN reviews ON users.user_id = reviews.review_author JOIN films ON reviews.review_film_id = films.film_id WHERE review_status_id = 1 ORDER BY review_datetime desc");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 }

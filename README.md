@@ -39,9 +39,12 @@ Käyttäjä voi tarkastella omia arvostelujaan profiilisivulla. Tätä kautta k�
 
 Sovellus näyttää listan kaikista arvosteluista, joiden status on 2 eli 'published'. Rekisteröimättömän käyttäjän arvostelut menevät sisään statuksella 1, eli 'pending'.
 
+Admin ja moderator -roolilla merkityt käyttäjät näkevät listan hyväksymistä odottavista arvosteluista. Arvosteluja voi käydä klikkaamassa hyväksytyiksi (accept) tai poistetuiksi (reject).
+Tämä lista on näkyvissä vain tunnistautuneille ja oikealla roolilla merkatuille käyttäjille. Sovellus näyttää virhesivua jos autentikaatio ei ole pätevä.
+
 ### Tekemistä
 
-Kannattaa kokeilla kirjautua sisään esimerkiksi käyttäjänä AnotherUser2 ja kirjoittaa elokuville arvosteluja.
+Kannattaa kokeilla kirjautua sisään esimerkiksi käyttäjänä AnotherUser2 ja kirjoittaa elokuville arvosteluja. Myös tunnistautumattoman käyttäjän arvosteluja voi käydä lisäämässä sivulle esim MasterAdmin-tunnuksella review queue:n kautta.
 
 Itse luotuja käyttäjiä voi käydä muuttamaksi verifikoiduiksi usereiksi, samoin arvosteluja voi käydä muuttamassa julkaistuiksi.
 Esim.

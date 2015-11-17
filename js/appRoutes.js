@@ -69,6 +69,14 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider',
             templateUrl : 'views/verification.html',
             controller : 'VerificationController'
         })
+        .when('/tools/reviewqueue', {
+            templateUrl : 'views/reviewqueue.html',
+            controller : 'ReviewQueueController'
+        })
+        .when('/tools/pendingreview/:id', {
+            templateUrl : 'views/viewreviewpending.html',
+            controller : 'ReviewPendingController'
+        })
     .otherwise({
         redirectTo: '/'
     })

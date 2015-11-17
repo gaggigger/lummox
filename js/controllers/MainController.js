@@ -17,6 +17,9 @@ angular.module('MainController', [])
                         $window.location = '#/verification';
                         // redirect to verification page forever
                     } else {
+                        if (data.data.role_name === 'Admin' || data.data.role_name === 'Moderator') {
+                            $scope.showTools = true;
+                        }
                         $scope.userId = data.data.user_id;
                         $scope.username = data.data.user_name;
                         $scope.loggedIn = true;

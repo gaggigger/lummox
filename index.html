@@ -42,6 +42,8 @@
         <script src="js/controllers/LogoutController.js"></script>
         <script src="js/controllers/ProfileController.js"></script>
         <script src="js/controllers/EditReviewController.js"></script>
+        <script src="js/controllers/ReviewQueueController.js"></script>
+        <script src="js/controllers/ReviewPendingController.js"></script>
 
 		<!-- styles -->
 		<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -67,13 +69,14 @@
                         <li ng-class="{ active: navIsActive('#/login') }" ng-hide="loggedIn"><a href="#/login">Log in</a></li>
                         <li ng-class="{ active: navIsActive('#/logout') }"ng-show="loggedIn"><a href="#/logout">Log out</a></li>
 					</ul>
+                    <ul ng-show="showTools" class="nav navbar-nav" id="tools">
+                        <li><a href="#/tools/reviewqueue">Review queue</a></li>
+                    </ul>
 				</div>
 			</div>
 		</nav>
 		
 		<div class="container">
-
-
 		
 			<div class="site-header jumbotron">
 				<div>
@@ -87,6 +90,7 @@
 			</div>
 			
 			<div class="row">
+
 			
 				<div class="col-sm-8 site-main text-center">
 					
@@ -97,6 +101,12 @@
 			
 			</div>
 		</div>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">Actually, before they sold out.</p>
+        </div>
+    </footer>
 	
 	</body>
 	

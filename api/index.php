@@ -19,5 +19,6 @@ $app->apiService = function() {
 };
 
 require "api.php";
+require "admin.php";
 
 $app->run();
