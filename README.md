@@ -28,10 +28,10 @@ Sovelluksessa voi tarkastella listaa käyttäjistä. Nimeä tai reviews-nappia p
 Käyttäjä voi rekisteröidä tunnuksensa antamalla sähköpostin ja salasanan. Sovellus luo käyttäjän roolilla 'unverified'. Roolia voidaan muuttaa ylläpitäjän toimesta.
 
 Olemassaolevia tunnuksia, joilla voi kirjautua sisään (tunnus / salasana):
-MasterAdmin / masterpass
-someUser1 / someUser12
-filmLover25 / filmLover25
-AnotherUser2 / AnotherUser2
+- MasterAdmin / masterpass
+- someUser1 / someUser12
+- filmLover25 / filmLover25
+- AnotherUser2 / AnotherUser2
 
 Käyttäjä voi tarkastella omia arvostelujaan profiilisivulla. Tätä kautta käyttäjä pääsee muokkaamaan arvostelujaan.
 
