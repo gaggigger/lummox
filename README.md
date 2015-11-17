@@ -43,6 +43,11 @@ Sovellus näyttää listan kaikista arvosteluista, joiden status on 2 eli 'publi
 
 Kannattaa kokeilla kirjautua sisään esimerkiksi käyttäjänä AnotherUser2 ja kirjoittaa elokuville arvosteluja.
 
+Itse luotuja käyttäjiä voi käydä muuttamaksi verifikoiduiksi usereiksi, samoin arvosteluja voi käydä muuttamassa julkaistuiksi.
+Esim.
+ - update reviews set review_status_id = 2 where review_status_id = 1
+ - update users set user_role_id = 3 where user_role_id = 6 || user_role_id = 4
+
 ## Muuta
 
 Sovellukseen on aloitettu autentikaation tekeminen, mutta se on jäänyt kesken. Arkkitehtuuri mahdollistaa kuitenkin autentikoinnin.
