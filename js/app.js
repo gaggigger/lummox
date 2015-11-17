@@ -4,7 +4,7 @@ angular.module('lummox',[
                          'UserController', 'UsersController', 'UserService', 'ReviewsController',
                          'RegistrationController', 'LoginController', 'VerificationController',
                          'LogoutController', 'ProfileController', 'EditReviewController', 'ReviewQueueController',
-                         'ReviewPendingController',
+                         'ReviewPendingController', 'ManageUserController', 'ManageUsersController',
                          'ui.bootstrap', 'angular-confirm', 'ngStorage'
 
                          ]);

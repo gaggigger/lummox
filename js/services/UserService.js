@@ -16,6 +16,17 @@ angular.module('UserService', []).factory('UserService', function($http) {
             return $http.get('api/users/role', {
                 headers : {'Authorization' : 'Bearer ' + token}
             });
+        },
+        getUser : function(token, userId) {
+            return $http.post('api/admin/getuser', userId, {
+                headers : {'Authorization' : 'Bearer ' + token}
+            });
+        },
+        verifyUser : function(token, user) {
+            return $http.post('api/admin/users/verify', user, {
+                headers : {'Authorization' : 'Bearer ' + token}
+            });
         }
     }
 });
+

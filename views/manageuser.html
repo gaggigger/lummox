@@ -1,0 +1,29 @@
+<div class="row">
+
+    <div class="col-sm-12 col-sm-offset-3">
+
+        <h2>Manage user {{ username }}</h2>
+
+        <div class="col-sm-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>User id</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>{{user.user_id}}</td>
+                    <td>{{user.user_name}}</td>
+                    <td>{{user.user_email}}</td>
+                    <td>{{user.role_name}} - {{user.role_desc}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <button ng-show="unverified" ng-click="verify()" type="button" class="btn btn-primary">Verify user</button>
+    </div>
+
+</div>

@@ -77,6 +77,14 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider',
             templateUrl : 'views/viewreviewpending.html',
             controller : 'ReviewPendingController'
         })
+        .when('/tools/users', {
+            templateUrl : 'views/manageusers.html',
+            controller : 'ManageUsersController'
+        })
+        .when('/tools/edituser/:id', {
+            templateUrl : 'views/manageuser.html',
+            controller : 'ManageUserController'
+        })
     .otherwise({
         redirectTo: '/'
     })

@@ -1,0 +1,26 @@
+<div class="row">
+
+    <div class="col-sm-12 col-sm-offset-3">
+
+        <h3>Manage users</h3>
+
+        <table class="table table-condensed">
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Edit / manage</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="user in users">
+                <td><a href="#/viewuser/{{user.user_id}}">{{user.user_name}}</a></td>
+                <td>{{user.role_name}}</td>
+                <td><a href="#/tools/edituser/{{user.user_id}}" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-pencil"></i></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+

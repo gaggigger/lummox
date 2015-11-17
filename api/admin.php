@@ -70,7 +70,25 @@ $app->post('/admin/review/accept', function() use ($app) {
     }
 });
 
-$app->post('/admin/user/verify', function() use ($app) {
+$app->post('/admin/getuser', function() use ($app) {
+    $request = new Request();
+    if($request->isPost()) {
+        $header = $request->getHeader('authorization');
+        if ($header) {
+            $token = $app->apiService->extractToken($header);
+        }
+    }
+    $data = json_decode($app->request()->getBody());
+    if (null !== $token) {
+        $response = array("success" => true, "data" => $app->dataAccessService->getUser($data));
+        $app->apiService->json(200, $response);
+    } else {
+        $response = array("success" => false, "data" => "Invalid token!");
+        $app->apiService->json(401, $response);
+    }
+});
+
+$app->post('/admin/users/verify', function() use ($app) {
     // user role id for user (verified)
     $verified = 3;
 
