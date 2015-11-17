@@ -25,7 +25,7 @@ Class DataAccessService {
     }
 
     public function getReviews() {
-        $query = $this->pdo->prepare("SELECT review_id, review_author, review_title, review_score, review_text, review_datetime, review_film_id, film_title, user_name FROM users JOIN reviews ON users.user_id = reviews.review_author JOIN films ON reviews.review_film_id = films.film_id WHERE review_status_id = 2 ORDER BY review_datetime");
+        $query = $this->pdo->prepare("SELECT review_id, review_author, review_title, review_score, review_text, review_datetime, review_film_id, film_title, user_name FROM users JOIN reviews ON users.user_id = reviews.review_author JOIN films ON reviews.review_film_id = films.film_id WHERE review_status_id = 2 ORDER BY review_datetime desc");
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -38,7 +38,7 @@ Class DataAccessService {
     }
 
     public function getFilmReviews($filmId) {
-        $query = $this->pdo->prepare("SELECT review_id, review_author, review_title, review_score, review_text, review_datetime, review_film_id, user_name, review_status_id FROM users JOIN reviews ON users.user_id = reviews.review_author JOIN review_status ON reviews.review_status_id = review_status.status_id WHERE review_film_id = ? && reviews.review_status_id = 2");
+        $query = $this->pdo->prepare("SELECT review_id, review_author, review_title, review_score, review_text, review_datetime, review_film_id, user_name, review_status_id FROM users JOIN reviews ON users.user_id = reviews.review_author JOIN review_status ON reviews.review_status_id = review_status.status_id WHERE review_film_id = ? && reviews.review_status_id = 2 ORDER BY review_datetime DESC");
         $query->bindParam(1, $filmId);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -89,7 +89,7 @@ Class DataAccessService {
     }
 
     public function getUserReviews($userId) {
-        $query = $this->pdo->prepare("SELECT user_name, review_id, review_title, review_score, review_text, review_datetime, review_film_id, film_title FROM films JOIN reviews ON films.film_id = reviews.review_film_id JOIN users ON reviews.review_author = users.user_id WHERE user_id = ? && review_status_id = 2");
+        $query = $this->pdo->prepare("SELECT user_name, review_id, review_title, review_score, review_text, review_datetime, review_film_id, film_title FROM films JOIN reviews ON films.film_id = reviews.review_film_id JOIN users ON reviews.review_author = users.user_id WHERE user_id = ? && review_status_id = 2 ORDER BY review_datetime DESC");
         $query->bindParam(1, $userId);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);

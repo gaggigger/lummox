@@ -47,6 +47,7 @@ Itse luotuja käyttäjiä voi käydä muuttamaksi verifikoiduiksi usereiksi, sam
 Esim.
  - update reviews set review_status_id = 2 where review_status_id = 1
  - update users set user_role_id = 3 where user_role_id = 6 || user_role_id = 4
+Huom. elokuvien arvostelujen keskiarvo on tietokantaan tallennettava tieto joka ei päivity automaattisesti.
 
 ## Muuta
 
